@@ -1,0 +1,77 @@
+﻿@model IEnumerable<MvcMovie.Models.User>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>用户列表</h1>
+
+<p>
+    <a asp-action="Create">添加用户</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.user_code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.user_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sec_phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_card)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.address_code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.address_detail)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sec_phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_card)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address_detail)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
