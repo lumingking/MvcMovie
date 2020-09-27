@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcMovie.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using MvcMovie.Services;
 
 namespace MvcMovie
 {
@@ -26,7 +29,17 @@ namespace MvcMovie
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MvcMovie")));
+            services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MvcMovie"),sqloptions=>sqloptions.EnableRetryOnFailure()));
+            services.AddHealthChecks();
+            services.AddHttpClient<GitHubService>();
+            services.AddHttpClient("github",c=>
+            {
+                c.BaseAddress = new Uri("https://api.github.com/");
+                // Github API versioning
+                c.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+                // Github requires a user-agent
+                c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,14 +56,23 @@ namespace MvcMovie
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions { 
+                RequestPath = "/node_modules",
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules"))
+            });
 
             app.UseRouting();
 
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                // Configure the Health Check endpoint and require an authorized user.
+                endpoints.MapHealthChecks("/healthz").RequireAuthorization();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

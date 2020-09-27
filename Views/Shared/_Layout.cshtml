@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Movie App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="\node_modules\bootstrap\dist\css\bootstrap.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -30,6 +31,9 @@
             </div>
         </nav>
     </header>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Navbar</span>
+    </nav>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -45,5 +49,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+
+    <script src="\node_modules\jquery\dist\jquery.js"></script>
+    <script src="\node_modules\jquery-validation\dist\jquery.validate.js"></script>
+    <script src="\node_modules\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js"></script>
 </body>
 </html>
