@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using MvcMovie.Data;
 using MvcMovie.Models;
+using Newtonsoft.Json;
 
 namespace MvcMovie.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly MvcMovieContext _context;
+        private readonly IDistributedCache _distributedCache;
 
-        public MoviesController(MvcMovieContext context)
+        public MoviesController(MvcMovieContext context,IDistributedCache distributedCache)
         {
             _context = context;
+            _distributedCache = distributedCache;
         }
 
         // GET: Movies
@@ -33,29 +38,47 @@ namespace MvcMovie.Controllers
         // GET: Movies
         public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
-            // Use LINQ to get list of genres.
-            IQueryable<string> genreQuery = from m in _context.Movie
-                                            orderby m.Genre
-                                            select m.Genre;
+            MovieGenreViewModel movieGenreVM = null;
+            var cacheMovies = _distributedCache.Get("movies2");
+            if (cacheMovies == null) {
+                // Use LINQ to get list of genres.
+                IQueryable<string> genreQuery = from m in _context.Movie
+                                                orderby m.Genre
+                                                select m.Genre;
 
-            var movies = from m in _context.Movie
-                         select m;
+                var movies = from m in _context.Movie
+                             select m;
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                movies = movies.Where(s => s.Title.Contains(searchString));
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    movies = movies.Where(s => s.Title.Contains(searchString));
+                }
+
+                if (!string.IsNullOrEmpty(movieGenre))
+                {
+                    movies = movies.Where(x => x.Genre == movieGenre);
+                }
+
+                movieGenreVM = new MovieGenreViewModel
+                {
+                    Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                    Movies = await movies.ToListAsync()
+                };
+
+                var serializedMovie = JsonConvert.SerializeObject(movieGenreVM);
+                byte[] encodedMovie = Encoding.UTF8.GetBytes(serializedMovie);
+
+                var cacheEntryOptions = new DistributedCacheEntryOptions();
+                cacheEntryOptions.SetSlidingExpiration(TimeSpan.FromSeconds(30));
+
+                _distributedCache.Set("movies2", encodedMovie,cacheEntryOptions);
             }
-
-            if (!string.IsNullOrEmpty(movieGenre))
+            else
             {
-                movies = movies.Where(x => x.Genre == movieGenre);
+                var serializedMoive = Encoding.UTF8.GetString(cacheMovies);
+                movieGenreVM = JsonConvert.DeserializeObject<MovieGenreViewModel>(serializedMoive);
             }
-
-            var movieGenreVM = new MovieGenreViewModel
-            {
-                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Movies = await movies.ToListAsync()
-            };
+            
 
             return View(movieGenreVM);
         }

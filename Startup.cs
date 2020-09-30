@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using MvcMovie.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcMovie
 {
@@ -31,6 +32,19 @@ namespace MvcMovie
             services.AddControllersWithViews();
             services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MvcMovie"),sqloptions=>sqloptions.EnableRetryOnFailure()));
             services.AddHealthChecks();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddDistributedRedisCache(options => {
+                options.Configuration = "localhost";
+                options.InstanceName = "redis-for-user";
+            });
+
             services.AddHttpClient<GitHubService>();
             services.AddHttpClient("github",c=>
             {
@@ -45,6 +59,7 @@ namespace MvcMovie
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseWelcomePage();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,6 +70,7 @@ namespace MvcMovie
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStatusCodePages();
             app.UseStaticFiles();
@@ -63,6 +79,7 @@ namespace MvcMovie
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules"))
             });
 
+            //app.UseCookiePolicy();
             app.UseRouting();
 
             //app.UseAuthentication();

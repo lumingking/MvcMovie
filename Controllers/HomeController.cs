@@ -21,14 +21,15 @@ namespace MvcMovie.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+            _logger.LogInformation("qiong","diyige");
             var request = new HttpRequestMessage(HttpMethod.Get,
             "repos/aspnet/AspNetCore.Docs/pulls");
 
             var client = _httpClientFactory.CreateClient("github");
 
-            var response = await client.SendAsync(request);
+            //var response = await client.SendAsync(request);
             return View();
         }
 
