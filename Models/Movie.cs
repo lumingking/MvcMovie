@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,6 +34,20 @@ namespace MvcMovie.Models
         [StringLength(5)]
         [Required]
         [Display(Name = "评级")]
-        public String Rating { get; set; }
+        public string Rating { get; set; }
+
+        [StringLength(50,ErrorMessage ="文件名在1-50个字符之间",MinimumLength =1)]
+        [Display(Name ="文件名")]
+        public string FileName { get; set; }
+
+        [StringLength(10)]
+        [Display(Name ="文件类型")]
+        public string FileType { get; set; }
+
+        [NotMapped]
+        [Required]
+        [Display(Name ="附件")]
+        //[FileExtensions(ErrorMessage ="附件格式错误",Extensions =".txt")]
+        public IFormFile FormFile { get; set; }
     }
 }

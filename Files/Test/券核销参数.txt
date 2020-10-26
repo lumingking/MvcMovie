@@ -1,0 +1,15 @@
+{
+    "type": 2,
+    "companyId": 1000001056,
+    "configId": null,
+    "configType": null,
+    "configOper": null,
+    "operationId": null,
+    "operationName": null,
+    "code": null,
+    "thirdTsCode": null,
+    "createTime": "2020-09-20 22:49:53",
+    "encrypt": 1,
+    "flag": 5,
+    "data": "N1WJlbIQ+Oo5LzxJwzLtOp7KOjW8VJy4v+tfxGe3F6chUu6pDgC/6L1btnthbSCiE5JhZ+MrJyja18xmDEmAnd+l+N4RU7yckOIKLOWYU1BM6+FB+JQAo/ZcoiSmg77Qa2strCGltE7vv16n4Bn727knU7HYLnTugC9wUUJzhvths/M6UWJUnM0QeDBpvo9zyv1nA/kn6PhykBkgSs8lbM1nbkwBEKfvOGc/3QH+MI7BzH0AODd4sKPVsJb+CehYlQ3IBp++xbvjy5bGRQyhUq7tzDYeCAVOEoIMm45lAA2/i/zMBbV6hESs9DcfKrUND+viW4ETBkPLfnJccGMIHGcWLFzKZf+M6nvphWxp8xvmZrNe1EoWX4R6M1EtZGI3m1iFeo5+cddVI2jeHmDmFZui4mlMBAgwDoK3TJZSqFWreu6tGBmOGOW+DSzVshw/teDpOteVNr5KTeC2VY2xm5/iaxPRfGj8r2+/V9+EN80Y6QmgN3unSoeOXM1AU/DQRD7mWr6zkh9/srIQoc9Gv7wGbsLaBzR1fhruyrSdRbKiHiMkJWYhS8B4XIdyNoUyT/s9Xy7qMuVyRw2kBuCRcutRrynrP4JKDhgJKmJvSlFL2g4AlETUAuvYkMGwyAXBZhYbtWUwHJVJbWc7n3iJ8eBavF0Ik7JhfHtspOZCfhCdOlUrRo7Dbj+3qJAgh0gGg9AESivVkbpV35wILNx605CTxFNoPZaGLiqolXG9GC676UmYPSv3EZmu9GuVJuchG5PiXY7H8vbEYrIZRMwaak75/cvEQKKiqXpRcnZwocz3/F82xDKU+ylbLFsT3AP77asAoVY5tbSGxiMnn4WU3GkFR5Y8Ix8JobQK8p8eszlequOgUd4zZhdw7jbg3HmETp8rFuIR0pEmoed1vOT8EjuKQhT4yJsqJDyWxRpTPtWxJjg/6mufvL5RPzHHoZibpFgd6Mc26OqyForN0opy3aUuCBRfEWJiun4a6pCUuuJKiVNwoJHGQfsSd7l4iWd7"
+}

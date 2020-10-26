@@ -44,6 +44,11 @@ namespace MvcMovie
                 options.Configuration = "localhost";
                 options.InstanceName = "redis-for-user";
             });
+            services.AddSession(options=> {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddHttpClient<GitHubService>();
             services.AddHttpClient("github",c=>
@@ -84,6 +89,7 @@ namespace MvcMovie
 
             //app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

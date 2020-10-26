@@ -12,10 +12,10 @@
 <form asp-controller="Movies" asp-action="Index" method="get">
     <p>
         <select asp-for="MovieGenre" asp-items="Model.Genres">
-            <option value="">ALL</option>
+            <option value="">全部</option>
         </select>
-        Title:<input type="text" name="searchstring" />
-        <input type="submit" value="Filter" />
+        电影名:<input type="text" name="searchstring" />
+        <input type="submit" value="过滤" />
     </p>
 </form>
 <table class="table">
@@ -36,6 +36,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Movies[0].Price)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movies[0].FileName)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -46,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelitem=>item.Rating)
+                @Html.DisplayFor(modelitem => item.Rating)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReleaseDate)
@@ -56,6 +59,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <a asp-action="Download" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.FileName)</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">编辑</a> |

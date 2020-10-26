@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Hosting;
 using MvcMovie.Data;
 using MvcMovie.Models;
 using Newtonsoft.Json;
@@ -17,11 +19,13 @@ namespace MvcMovie.Controllers
     {
         private readonly MvcMovieContext _context;
         private readonly IDistributedCache _distributedCache;
+        private readonly IHostEnvironment _env;
 
-        public MoviesController(MvcMovieContext context,IDistributedCache distributedCache)
+        public MoviesController(MvcMovieContext context,IDistributedCache distributedCache,IHostEnvironment env)
         {
             _context = context;
             _distributedCache = distributedCache;
+            _env = env;
         }
 
         // GET: Movies
@@ -105,6 +109,29 @@ namespace MvcMovie.Controllers
             return View(movie);
         }
 
+        public async Task<IActionResult> Download(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie.FirstOrDefaultAsync(m => m.Id == id);
+            if(movie == null)
+            {
+                return NotFound();
+            }
+            var filePath =Path.Combine("Files/Test",movie.FileName + movie.FileType);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+            var stream = System.IO.File.OpenRead(filePath);
+            var fileName = Path.GetFileName(filePath);
+            var actionResult = new FileStreamResult(stream,fileName);
+            return actionResult;
+        }
+
         // GET: Movies/Create
         public IActionResult Create()
         {
@@ -116,10 +143,29 @@ namespace MvcMovie.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating,FormFile")] Movie movie)
         {
             if (ModelState.IsValid)
             {
+                //string uniqueFileName = null;
+                if(movie.FormFile != null)
+                {
+                    var unsafeFileName = movie.FormFile.FileName;
+                    var fileName = Path.GetFileNameWithoutExtension(unsafeFileName);
+                    var fileType = Path.GetExtension(unsafeFileName);
+                    movie.FileName = fileName;
+                    movie.FileType = fileType;
+
+                    if (!System.IO.Directory.Exists("Files/Test")) {
+                        Directory.CreateDirectory("Files/Test");
+                    }
+
+                    var filePath = Path.Combine(_env.ContentRootPath,"Files/Test",fileName+fileType);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await movie.FormFile.CopyToAsync(stream);
+                    }
+                }
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

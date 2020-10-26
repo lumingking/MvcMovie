@@ -1,0 +1,15 @@
+{
+    "type": 3,
+    "companyId": 1000001056,
+    "configId": null,
+    "configType": null,
+    "configOper": null,
+    "operationId": null,
+    "operationName": null,
+    "code": null,
+    "thirdTsCode": null,
+    "createTime": "2020-09-21 15:50:32",
+    "encrypt": 1,
+    "flag": 1,
+    "data": "IK0IoqGi636XOP8LkuwxBcQph6TYlqObvZF5lxpZoV6fcvmitQ6tRbEKlPB3NxUjndEMmQ/8Lm+4QbzzefMtFGAZDXW9cIwdw74kKg89YUaWYHRXtPlKAK2ZkxXughQ3GMwt+3VIBS2L2uTsXaR3b/5rFjg68AdmJ4tFVgbWu7cYRfY+hAXI79cJSAeUWJr+D3pr/nqim5XSYrsGhbKMeuKA1MbNxZ/+x/WJHSc9N7idceZihmr+5j6DdWiTRWj+oeXVXywA4bDqeg29rCEg8gitThIQ9UBjMTU2GiE2uYGWrqRrRqapDzTCbzCi9FYssOA0PggkMgdJAT+ECePdm1Y+UcJ1WrRLw71K8zxZCTENB+CNdDqna3ONHeIlWeJ6/R4r8LSlB3X4q0qjGS8vREGuOYP6l9KM8qkVHe1tjalwOAaaYVYHdIxjSgBgV2UgfqhRe8Noz9UQCRxFUgbI+fDpGNaMdSBuufcnbBWZT5YX15mry2x3rO8HUvOEShd+NNjUIpRcKP7kEtyCJ/Ueog4gfT2OGnEyDlSd4fX6WYh1/ANNDsTctee97klxw1Jd0/2Y33f2iSrB6cRti7LdaViPxaRAhPAaFji5pAlp4v9FJ/53x9a1nYXcPkAmUoRNuCrQW4XpRd6f+RATCjWhWpMSjpWcDqIG3INUXgGH14qRju8DMJqnztHFsRFMPAjOL9r2ke0tytM6WoPSb7E+ftuyK0tzqSNzEjBLpPmApRuiLwtQ+X4jnVHZTMOluS/UTfQuCXJIiC+sZh83oKfaJInZpVl1pqUOUM3NCtyM5TidjmhMwpY1r5caZE0648TuF3p1cC6Pqo12VehGb0xAcUHPTu123ShTtOfTXy++YIE8nVhcRYEy8X5J2uTyGf/WSHcgzSNtqeRNWqprCyujFFJ86HJCvHyGexxtRRvbNN7ZTLtHzJDpubW6Vw677ZR0suBuhMVUyqKjzIL23peY6peM9BRRgJJmtAwN8Stggz3KuF35zNm6LrXG7JMQTH+TTsNofwwe38Qzuo+4X5/0sQhh8w+sKrOjuOIjou/bPJHrqAoSfFdIi0uZHiabUH8mjyxzPZrRAz3A6yozHN4xIM/JH8v7/sqdTmln+cTJtxifTSHSO+Q7LL8LJAxtUmYm4ldbvFUpPiyxJDPWSsVmBCd9WXIVfXSmFDCXNFhcMqJTXG6Us85ETfzFqKjqddU/YGU1lpo2YARoF6R4J2eK7uK7EwydpbeltoSSm9UwVucjEEhIhnfP5sC0NOZvWEyzKxSV4MoE7lkZyYT7+TTMkH+oooFQpEcyAi+g+2G7rMqylmCz0tMGoybJR9lsywBSXNRcdcF7b7qLrlTNWzjI/BTMEcxGK0NGW8/TJ2NDLzaRL5N6A1TMzlITkLflntFGwBoyFjQw1UJBkEy7VGEFYUj8oEx2xSJcCV+3eev3wxPeRZg0L9Ngynf0qI8NKuOmV6EUyOIUL6F+A+qPVIJBON07aDOgaYJ/jXEEhSqx4jSvdMEoL07dXjPckjHNqIVjaqudN+HIHrmYLB/vEyZgRTBge8iCoqVp/wOShxvZAQVyRVFyhq8wJxSjjphsXbLpCL0ZZCrdAaUmGMptMtaKmDblh1nF12wsEE8jgAcIHgbhpWQaWukNCLbY5tjw5g9vJyWBkESjjVRzbesbVD6ohBgOdqsBNlgnnOr4djz99+yGPsF+nA9q/XgtE5OHBToAMoxYFfj0J4+Biy4ZQrv21UCzvThSA0O986oD/bf4irtDdYwlsfUE9E4svBuAVyPkzquwJr9fscqoPzH8eHPtk90+Y/5QM+d5IkXVpR1+YB2PRJzXT9nN3tV53BgI0fe6wJfzufLHz8jJstWjJWyJNQ=="
+}
