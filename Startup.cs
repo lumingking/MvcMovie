@@ -14,6 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using MvcMovie.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace MvcMovie
 {
@@ -40,6 +41,12 @@ namespace MvcMovie
                 // requires using Microsoft.AspNetCore.Http;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.Configure<FormOptions>(options => {
+                // Set the limit to 256 MB£¬default is 128 MB
+                options.MultipartBodyLengthLimit = 268435456;
+            });
+
             services.AddDistributedRedisCache(options => {
                 options.Configuration = "localhost";
                 options.InstanceName = "redis-for-user";

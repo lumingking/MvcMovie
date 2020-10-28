@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using MvcMovie.Data;
 using MvcMovie.Models;
 using Newtonsoft.Json;
@@ -121,15 +124,16 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            var filePath =Path.Combine("Files/Test",movie.FileName + movie.FileType);
+            var fileDirectory = Path.Combine(_env.ContentRootPath, "Files/Test");
+            var fileName = movie.FileName + movie.FileType;
+            var filePath =Path.Combine(fileDirectory,fileName);
             if (!System.IO.File.Exists(filePath))
             {
                 return NotFound();
             }
-            var stream = System.IO.File.OpenRead(filePath);
-            var fileName = Path.GetFileName(filePath);
-            var actionResult = new FileStreamResult(stream,fileName);
-            return actionResult;
+            var physicalProvider = new PhysicalFileProvider(fileDirectory);
+            var downloadFile = physicalProvider.GetFileInfo(fileName);
+            return PhysicalFile(downloadFile.PhysicalPath,MediaTypeNames.Application.Octet,fileName);
         }
 
         // GET: Movies/Create
