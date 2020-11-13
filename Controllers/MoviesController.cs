@@ -46,46 +46,69 @@ namespace MvcMovie.Controllers
         public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
             MovieGenreViewModel movieGenreVM = null;
-            var cacheMovies = _distributedCache.Get("movies2");
-            if (cacheMovies == null) {
+            List<Movie> movies = null;
+            List<string> genreQuery = null;
+
+            var cacheGenres = _distributedCache.Get("_genres");
+            if(cacheGenres == null)
+            {
                 // Use LINQ to get list of genres.
-                IQueryable<string> genreQuery = from m in _context.Movie
+                genreQuery = await (from m in _context.Movie
                                                 orderby m.Genre
-                                                select m.Genre;
+                                                select m.Genre).Distinct().ToListAsync();
 
-                var movies = from m in _context.Movie
-                             select m;
+                var serializeGenre = JsonConvert.SerializeObject(genreQuery);
+                byte[] encodeGenre = Encoding.UTF8.GetBytes(serializeGenre);
 
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    movies = movies.Where(s => s.Title.Contains(searchString));
-                }
+                var cacheEntryOptions = new DistributedCacheEntryOptions();
+                cacheEntryOptions.SetSlidingExpiration(TimeSpan.FromSeconds(300));
 
-                if (!string.IsNullOrEmpty(movieGenre))
-                {
-                    movies = movies.Where(x => x.Genre == movieGenre);
-                }
+                _distributedCache.Set("_genres", encodeGenre, cacheEntryOptions);
+            }
+            else
+            {
+                var serializedGenre = Encoding.UTF8.GetString(cacheGenres);
+                genreQuery = JsonConvert.DeserializeObject<List<string>>(serializedGenre);
+            }
 
-                movieGenreVM = new MovieGenreViewModel
-                {
-                    Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                    Movies = await movies.ToListAsync()
-                };
+            var cacheMovies = _distributedCache.Get("_movies");
+            if (cacheMovies == null) {
 
-                var serializedMovie = JsonConvert.SerializeObject(movieGenreVM);
+                movies = await (from m in _context.Movie
+                             select m).ToListAsync();                
+
+                var serializedMovie = JsonConvert.SerializeObject(movies);
                 byte[] encodedMovie = Encoding.UTF8.GetBytes(serializedMovie);
 
                 var cacheEntryOptions = new DistributedCacheEntryOptions();
-                cacheEntryOptions.SetSlidingExpiration(TimeSpan.FromSeconds(30));
+                cacheEntryOptions.SetSlidingExpiration(TimeSpan.FromSeconds(120));
 
-                _distributedCache.Set("movies2", encodedMovie,cacheEntryOptions);
+                _distributedCache.Set("_movies", encodedMovie,cacheEntryOptions);
             }
             else
             {
                 var serializedMoive = Encoding.UTF8.GetString(cacheMovies);
-                movieGenreVM = JsonConvert.DeserializeObject<MovieGenreViewModel>(serializedMoive);
+                movies = JsonConvert.DeserializeObject<List<Movie>>(serializedMoive);
             }
-            
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                movies = (from movie in movies
+                         where movie.Title.Contains(searchString)
+                         select movie).ToList();
+                    //(List<Movie>)movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Genre == movieGenre).ToList();
+            }
+
+            movieGenreVM = new MovieGenreViewModel
+            {
+                Genres = new SelectList(genreQuery),
+                Movies = movies
+            };
 
             return View(movieGenreVM);
         }
