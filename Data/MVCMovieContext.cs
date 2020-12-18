@@ -6,6 +6,8 @@ namespace MvcMovie.Data
 {
     public class MvcMovieContext : DbContext
     {
+        //如果配置LoggerFactory，则配置在program中的日志将失效，DbContext日志将使用Microsoft.Extensions.Logging;
+        /*
         public static readonly ILoggerFactory myLoggerFactory
             = LoggerFactory.Create(builder =>
             {
@@ -14,6 +16,7 @@ namespace MvcMovie.Data
                 && level == LogLevel.Information)
                 .AddConsole();
             });
+        */
         public MvcMovieContext(DbContextOptions<MvcMovieContext> options)
             : base(options)
         {
@@ -22,9 +25,11 @@ namespace MvcMovie.Data
         public DbSet<Movie> Movie { get; set; }
         public DbSet<User> User { get; set; }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseLoggerFactory(myLoggerFactory);
         }
+        */
     }
 }
