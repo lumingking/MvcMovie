@@ -66,6 +66,7 @@ namespace MvcMovie
                 // Github requires a user-agent
                 c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
             });
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
